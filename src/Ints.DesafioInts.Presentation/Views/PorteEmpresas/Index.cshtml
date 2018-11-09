@@ -4,17 +4,18 @@
     ViewBag.Title = "Listar Porte Empresa";
 }
 
-<h2>Index</h2>
+<h2>Porte Empresas</h2>
+<hr /><br />
 
 <p>
-    @Html.ActionLink("Cadastrar Porte Empresa", "Create")
+    @Html.ActionLink("Cadastrar Porte Empresa", "Create", "", new { @class = "btn btn-default" })
 </p>
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Descricao)
         </th>
-        <th></th>
+        <th>Opções</th>
     </tr>
 
 @foreach (var item in Model) {
@@ -23,8 +24,8 @@
             @Html.DisplayFor(modelItem => item.Descricao)
         </td>
         <td>
-            @Html.ActionLink("Editar", "Edit", new { id=item.PorteEmpresaId }) |
-            @Html.ActionLink("Detalhes", "Details", new { id=item.PorteEmpresaId }) |
+            @Html.ActionLink("Atualizar", "Edit", new { id=item.PorteEmpresaId }) |
+            @Html.ActionLink("Visualizar", "Details", new { id=item.PorteEmpresaId }) |
             @Html.ActionLink("Excluir", "Delete", new { id=item.PorteEmpresaId })
         </td>
     </tr>

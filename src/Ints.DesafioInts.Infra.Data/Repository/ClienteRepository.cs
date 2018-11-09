@@ -9,7 +9,7 @@ namespace Ints.DesafioInts.Infra.Data.Repository
     {
         public Cliente ObterPorNome(string nome)
         {
-            return Buscar(c => c.Nome == nome).FirstOrDefault();
+            return Buscar(c => c.Nome.Contains(nome)).FirstOrDefault();
         }
     }
 }

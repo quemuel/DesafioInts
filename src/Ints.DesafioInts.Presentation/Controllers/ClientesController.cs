@@ -10,6 +10,8 @@ using Ints.DesafioInts.Application.Interfaces;
 using Ints.DesafioInts.Application.Services;
 using Ints.DesafioInts.Application.ViewModels;
 using Ints.DesafioInts.Presentation.Models;
+using System.Collections;
+using System.Data.SqlClient;
 
 namespace Ints.DesafioInts.Presentation.Controllers
 {
@@ -26,7 +28,44 @@ namespace Ints.DesafioInts.Presentation.Controllers
         
         public ActionResult Index()
         {
-            return View(_cadastroAppService.ObterTodos());
+            var buscar = HttpContext.Request.Params.Get("buscar");
+
+            string[] porteEmpresasInformacoes = new string[3] { "porte-empresa-grande", "porte-empresa-media", "porte-empresa-pequena" };
+
+            List<ClienteViewModel> clientes = new List<ClienteViewModel>();
+
+            if (!string.IsNullOrEmpty(buscar) && Array.Exists(porteEmpresasInformacoes, p => p == buscar))
+            {
+                string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                string query = "SELECT ClienteId, Nome, PorteEmpresaId FROM Clientes;";
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    SqlCommand command = new SqlCommand(query, connection);
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    try
+                    {
+                        while (reader.Read())
+                        {
+                            //clientes.Add(new ClienteViewModel { ClienteId = Convert.ToInt64(reader.GetOrdinal("Column1"))), Nome = , PorteEmpresaId = });
+                        }
+                    }
+                    finally
+                    {
+                        // Always call Close when done reading.
+                        reader.Close();
+                    }
+                }
+            } else if(!string.IsNullOrEmpty(buscar))
+            {                
+                clientes.Add(_cadastroAppService.ObterPorNome(buscar));
+            } else
+            {
+                clientes = _cadastroAppService.ObterTodos().OrderBy(c => c.Nome).ToList();                
+            }
+
+            return View(clientes);
         }
         
         public ActionResult Details(Guid? id)
@@ -72,8 +111,14 @@ namespace Ints.DesafioInts.Presentation.Controllers
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }            
             var clienteViewModel = _cadastroAppService.ObterPorId(id.Value);
+            ViewBag.PorteEmpresaId = new SelectList((from porteEmpresa in _porteEmpresaAppService.ObterTodos()
+                select new
+                {
+                    PorteEmpresaId = porteEmpresa.PorteEmpresaId,
+                    Descricao = porteEmpresa.Descricao
+                }), "PorteEmpresaId", "Descricao", clienteViewModel.PorteEmpresaId);
             if (clienteViewModel == null)
             {
                 return HttpNotFound();

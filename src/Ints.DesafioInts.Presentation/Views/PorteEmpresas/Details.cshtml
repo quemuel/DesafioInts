@@ -4,23 +4,24 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h3>Visualizar Porte Empresa</h3>
+<hr />
 
-<div>
-    <h4>PorteEmpresaViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Descricao)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Descricao)
-        </dd>
-
-    </dl>
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-12">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Descricao)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Descricao)
+                </dd>
+            </dl>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PorteEmpresaId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<div class="btn-group">
+    @Html.ActionLink("Voltar", "Index", "", new { @class = "btn btn-default" })
+    @Html.ActionLink("Atualizar Porte Empresa", "Edit", new { id = Model.PorteEmpresaId }, new { @class = "btn btn-success" })
+</div>

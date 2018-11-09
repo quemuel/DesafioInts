@@ -1,26 +1,33 @@
 ﻿@model Ints.DesafioInts.Application.ViewModels.ClienteViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Visualizar Cliente";
 }
 
-<h2>Details</h2>
+<h3>Visualizar Cliente</h3>
+<hr />
 
-<div>
-    <h4>ClienteViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-
-    </dl>
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-12">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Nome)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.PorteEmpresa.Descricao)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.PorteEmpresa.Descricao)
+                </dd>
+            </dl>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ClienteId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<div class="btn-group">
+    @Html.ActionLink("Voltar", "Index", "", new { @class = "btn btn-default" })
+    @Html.ActionLink("Atualizar Cliente", "Edit", new { id = Model.ClienteId }, new { @class = "btn btn-success" })
+</div>
