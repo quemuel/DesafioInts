@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Presentation", "{2E61AD51-5E79-4393-B040-6C71C07B051F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Services", "2 - Services", "{290DD54B-F37B-44C0-9136-1151D1C35AB4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4 - Domain", "4 - Domain", "{9AA5BC04-1636-4359-915E-08D86326D085}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Infra", "5 - Infra", "{CB68AD7D-6777-4BD6-842A-8920486098CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.1 - Data", "5.1 - Data", "{D540B35B-4AE9-492C-9317-1F1C9655D1D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.2 - CrossCutting", "5.2 - CrossCutting", "{0EE14DEB-F338-44EB-AABD-07CB9DCE7CAA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ints.DesafioInts.Domain", "src\Ints.DesafioInts.Domain\Ints.DesafioInts.Domain.csproj", "{72D271EA-A1DF-437A-890A-2203962E79A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ints.DesafioInts.Infra.Data", "src\Ints.DesafioInts.Infra.Data\Ints.DesafioInts.Infra.Data.csproj", "{49D8F223-7986-47C4-B9D5-77EA0860BCB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Application", "3 - Application", "{B9DCED46-D21C-41FC-A8A1-236BDA9CAB0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ints.DesafioInts.Application", "src\Ints.DesafioInts.Application\Ints.DesafioInts.Application.csproj", "{1E3AAE2B-E9FA-4A58-8D24-3AC62525CF96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ints.DesafioInts.Presentation", "src\Ints.DesafioInts.Presentation\Ints.DesafioInts.Presentation.csproj", "{BD1A3258-381A-4A40-94BC-D388ED74F179}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72D271EA-A1DF-437A-890A-2203962E79A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72D271EA-A1DF-437A-890A-2203962E79A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72D271EA-A1DF-437A-890A-2203962E79A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72D271EA-A1DF-437A-890A-2203962E79A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49D8F223-7986-47C4-B9D5-77EA0860BCB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49D8F223-7986-47C4-B9D5-77EA0860BCB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49D8F223-7986-47C4-B9D5-77EA0860BCB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49D8F223-7986-47C4-B9D5-77EA0860BCB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E3AAE2B-E9FA-4A58-8D24-3AC62525CF96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E3AAE2B-E9FA-4A58-8D24-3AC62525CF96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E3AAE2B-E9FA-4A58-8D24-3AC62525CF96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E3AAE2B-E9FA-4A58-8D24-3AC62525CF96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD1A3258-381A-4A40-94BC-D388ED74F179}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD1A3258-381A-4A40-94BC-D388ED74F179}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD1A3258-381A-4A40-94BC-D388ED74F179}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD1A3258-381A-4A40-94BC-D388ED74F179}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D540B35B-4AE9-492C-9317-1F1C9655D1D6} = {CB68AD7D-6777-4BD6-842A-8920486098CE}
+		{0EE14DEB-F338-44EB-AABD-07CB9DCE7CAA} = {CB68AD7D-6777-4BD6-842A-8920486098CE}
+		{72D271EA-A1DF-437A-890A-2203962E79A6} = {9AA5BC04-1636-4359-915E-08D86326D085}
+		{49D8F223-7986-47C4-B9D5-77EA0860BCB3} = {D540B35B-4AE9-492C-9317-1F1C9655D1D6}
+		{1E3AAE2B-E9FA-4A58-8D24-3AC62525CF96} = {B9DCED46-D21C-41FC-A8A1-236BDA9CAB0E}
+		{BD1A3258-381A-4A40-94BC-D388ED74F179} = {2E61AD51-5E79-4393-B040-6C71C07B051F}
+	EndGlobalSection
+EndGlobal
