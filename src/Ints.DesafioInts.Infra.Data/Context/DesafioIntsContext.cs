@@ -10,7 +10,7 @@ namespace Ints.DesafioInts.Infra.Data.Context
     {
         public DesafioIntsContext() : base("DefaultConnection")
         {
-            Database.SetInitializer<DesafioIntsContext>(new MigrateDatabaseToLatestVersion<DesafioIntsContext, Configuration>());
+            //Database.SetInitializer<DesafioIntsContext>(new MigrateDatabaseToLatestVersion<DesafioIntsContext, Configuration>());
         }
 
         public DbSet<Cliente> Clientes { get; set; }

@@ -8,7 +8,7 @@ namespace Ints.DesafioInts.Application.AutoMapper
     {
         protected void Configure()
         {
-            CreateMap<ClienteViewModel, Cliente>();
+            CreateMap<ClienteViewModel, Cliente>().ForMember(cvm => cvm.PorteEmpresa, cvm => cvm.MapFrom(c => c.PorteEmpresaViewModel));
             CreateMap<PorteEmpresaViewModel, PorteEmpresa>();
         }
     }

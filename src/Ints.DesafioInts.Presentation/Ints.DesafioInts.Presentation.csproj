@@ -308,6 +308,10 @@
       <Project>{1e3aae2b-e9fa-4a58-8d24-3ac62525cf96}</Project>
       <Name>Ints.DesafioInts.Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Ints.DesafioInts.Domain\Ints.DesafioInts.Domain.csproj">
+      <Project>{72D271EA-A1DF-437A-890A-2203962E79A6}</Project>
+      <Name>Ints.DesafioInts.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

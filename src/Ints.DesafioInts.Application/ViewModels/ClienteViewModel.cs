@@ -11,6 +11,7 @@ namespace Ints.DesafioInts.Application.ViewModels
         {
             ClienteId = Guid.NewGuid();
         }
+
         [Key]
         public Guid ClienteId { get; set; }
 
@@ -24,6 +25,6 @@ namespace Ints.DesafioInts.Application.ViewModels
         [DisplayName("Porte da Empresa")]
         public int PorteEmpresaId { get; set; }
 
-        public virtual PorteEmpresa PorteEmpresa { get; set; }
+        public virtual PorteEmpresaViewModel PorteEmpresaViewModel { get; set; }
     }
 }
