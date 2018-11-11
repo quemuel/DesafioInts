@@ -2,7 +2,6 @@
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Ints.DesafioInts.Domain.Entities;
 using Ints.DesafioInts.Infra.Data.EntityConfig;
-using Ints.DesafioInts.Infra.Data.Migrations;
 
 namespace Ints.DesafioInts.Infra.Data.Context
 {

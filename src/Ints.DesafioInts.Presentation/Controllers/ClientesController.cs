@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Ints.DesafioInts.Application.Interfaces;
 using Ints.DesafioInts.Application.Services;
 using Ints.DesafioInts.Application.ViewModels;
-using Ints.DesafioInts.Presentation.Models;
-using System.Collections;
-using System.ComponentModel;
 using System.Data.SqlClient;
+using AutoMapper;
+using Ints.DesafioInts.Domain.Entities;
 
 namespace Ints.DesafioInts.Presentation.Controllers
 {
@@ -26,54 +22,57 @@ namespace Ints.DesafioInts.Presentation.Controllers
             _cadastroAppService = new ClienteAppService();
             _porteEmpresaAppService = new PorteEmpresaAppService();
         }
-        
-        public ActionResult Index()
+
+        public ActionResult Index(string buscaNome = null, string buscaTipo = null)
         {
-            var buscar = HttpContext.Request.Params.Get("buscar");
-
-            string[] porteEmpresasInformacoes = new string[3] { "porte-empresa-grande", "porte-empresa-media", "porte-empresa-pequena" };
-
             List<ClienteViewModel> clientes = new List<ClienteViewModel>();
 
-            if (!string.IsNullOrEmpty(buscar) && Array.Exists(porteEmpresasInformacoes, p => p == buscar))
+            if (!string.IsNullOrEmpty(buscaNome))
             {
-                string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                string query = "SELECT ClienteId, Nome, PorteEmpresaId FROM dbo.Cliente;";
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    SqlCommand command = new SqlCommand(query, connection);
-                    connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    try
-                    {
-                        while (reader.Read())
-                        {
-                            ClienteViewModel clienteViewModel = new ClienteViewModel();
-                            clienteViewModel.ClienteId = Guid.Parse(reader["ClienteId"].ToString());
-                            clienteViewModel.Nome = reader["Nome"].ToString();
-                            clienteViewModel.PorteEmpresaId = Convert.ToInt32(reader["PorteEmpresaId"]);
-                            clienteViewModel.PorteEmpresaViewModel = _porteEmpresaAppService.ObterPorId(Convert.ToInt32(reader["PorteEmpresaId"]));
-                            clientes.Add(clienteViewModel);
-                        }
-                    }
-                    finally
-                    {
-                        // Always call Close when done reading.
-                        reader.Close();
-                    }
-                }
-            } else if(!string.IsNullOrEmpty(buscar))
-            {                
-                clientes.Add(_cadastroAppService.ObterPorNome(buscar));
-            } else
+                clientes.Add(_cadastroAppService.ObterPorNome(buscaNome)); 
+            }
+            else if (!string.IsNullOrEmpty(buscaTipo))
             {
-                clientes = _cadastroAppService.ObterTodos().OrderBy(c => c.Nome).ToList();                
+                ConexaoNativa(clientes, buscaTipo);
+            }
+            else
+            {
+                clientes = _cadastroAppService.ObterTodos().OrderBy(c => c.Nome).ToList();
             }
 
             return View(clientes);
         }
-        
+
+        private void ConexaoNativa(List<ClienteViewModel> clientes, string buscaTipo)
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"]
+                .ConnectionString;
+            string query = "SELECT ClienteId, Nome, PorteEmpresaId FROM dbo.Cliente WHERE PorteEmpresaId = " + buscaTipo;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                try
+                {
+                    while (reader.Read())
+                    {
+                        ClienteViewModel clienteViewModel = new ClienteViewModel();
+                        clienteViewModel.ClienteId = Guid.Parse(reader["ClienteId"].ToString());
+                        clienteViewModel.Nome = reader["Nome"].ToString();
+                        clienteViewModel.PorteEmpresaId = Convert.ToInt32(reader["PorteEmpresaId"]);
+                        clienteViewModel.PorteEmpresa = Mapper.Map<PorteEmpresa>(_porteEmpresaAppService.ObterPorId(Convert.ToInt32(reader["PorteEmpresaId"])));
+                        clientes.Add(clienteViewModel);
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                }
+            }
+        }
+
         public ActionResult Details(Guid? id)
         {
             if (id == null)
@@ -90,12 +89,7 @@ namespace Ints.DesafioInts.Presentation.Controllers
         
         public ActionResult Create()
         {
-            ViewBag.PorteEmpresaId = new SelectList((from porteEmpresaViewModel in _porteEmpresaAppService.ObterTodos()
-                select new
-                {
-                    PorteEmpresaId = porteEmpresaViewModel.PorteEmpresaId,
-                    Descricao = porteEmpresaViewModel.Descricao
-                }), "PorteEmpresaId", "Descricao");
+            ViewBag.PorteEmpresaId = new SelectList(_porteEmpresaAppService.ObterTodos(), "PorteEmpresaId", "Descricao");
             return View();
         }
 
@@ -119,12 +113,7 @@ namespace Ints.DesafioInts.Presentation.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }            
             var clienteViewModel = _cadastroAppService.ObterPorId(id.Value);
-            ViewBag.PorteEmpresaId = new SelectList((from porteEmpresaViewModel in _porteEmpresaAppService.ObterTodos()
-                select new
-                {
-                    PorteEmpresaId = porteEmpresaViewModel.PorteEmpresaId,
-                    Descricao = porteEmpresaViewModel.Descricao
-                }), "PorteEmpresaId", "Descricao", clienteViewModel.PorteEmpresaId);
+            ViewBag.PorteEmpresaId = new SelectList(_porteEmpresaAppService.ObterTodos(), "PorteEmpresaId", "Descricao", clienteViewModel.PorteEmpresaId);
             if (clienteViewModel == null)
             {
                 return HttpNotFound();
@@ -164,6 +153,13 @@ namespace Ints.DesafioInts.Presentation.Controllers
         {
             _cadastroAppService.Remover(id);
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public void DeleteClienteAjax(Guid id)
+        {
+            _cadastroAppService.Remover(id);
         }
 
         protected override void Dispose(bool disposing)

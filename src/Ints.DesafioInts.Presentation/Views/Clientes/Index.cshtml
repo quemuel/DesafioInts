@@ -19,27 +19,25 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-md-12">
-                    @Html.ActionLink("Somente Grande", "Index", "Clientes", new { buscar = "porte-empresa-grande" }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Somente Média", "Index", "Clientes", new { buscar = "porte-empresa-media" }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Somente Pequena", "Index", "Clientes", new { buscar = "porte-empresa-pequena" }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Somente Grande", "Index", "Clientes", new { buscaTipo = 3 }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Somente Média", "Index", "Clientes", new { buscaTipo = 2 }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Somente Pequena", "Index", "Clientes", new { buscaTipo = 1 }, new { @class = "btn btn-default" })
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-4">
-                    @using (Html.BeginForm(null, null, FormMethod.Get))
-                    {
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="buscar" placeholder="Buscar por Nome...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="submit">Buscar</button>
-                                </span>
-                            </div>
+        <div class="row">
+            <div class="col-md-4">
+                @using (Html.BeginForm(null, null, FormMethod.Get))
+                {
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="buscaNome" placeholder="Buscar por Nome...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Buscar</button>
+                            </span>
                         </div>
-                    }
-                </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -53,7 +51,7 @@
         </a>
     </div>
     <div class="panel-body">
-        <table class="table">
+        <table id="tabela-cliente" class="table">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Nome)
@@ -71,12 +69,12 @@
                         @Html.DisplayFor(modelItem => item.Nome)
                     </td>
                     <td>
-                        @item.PorteEmpresaViewModel.Descricao
+                        @item.PorteEmpresa.Descricao
                     </td>
                     <td>
                         @Html.ActionLink("Visualizar", "Details", new { id = item.ClienteId }, new { @class = "btn btn-success btn-xs" })
                         @Html.ActionLink("Atualizar", "Edit", new { id = item.ClienteId }, new { @class = "btn btn-warning btn-xs" })
-                        @Html.ActionLink("Excluir", "Delete", new { id = item.ClienteId }, new { @class = "btn btn-danger btn-xs" })
+                        <button class="btn btn-danger btn-xs deletar-cliente" data-cliente-id="@item.ClienteId">Excluir</button>
                     </td>
                 </tr>
             }
@@ -84,3 +82,26 @@
         </table>
     </div>
 </div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+}
+@section Scripts {
+    <script>
+        $("body").on("click", "#tabela-cliente .deletar-cliente", function () {
+            if (confirm("Tem certeza que quer excluir este registro?")) {
+                var buttonElement = $(this);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteClienteAjax", "Clientes")?id=' + buttonElement.data('cliente-id'),
+                    data: {
+                        '__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        location.reload();
+                    }
+                });
+            }
+        });
+    </script>
+}

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Ints.DesafioInts.Domain.Entities;
+﻿using Ints.DesafioInts.Domain.Entities;
 
 namespace Ints.DesafioInts.Domain.Interfaces.Repository
 {
