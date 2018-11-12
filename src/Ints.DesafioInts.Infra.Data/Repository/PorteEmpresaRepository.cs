@@ -8,7 +8,7 @@ namespace Ints.DesafioInts.Infra.Data.Repository
     {
         public PorteEmpresa ObterPorDescricao(string descricao)
         {
-            return Buscar(c => c.Descricao.Contains(descricao)).FirstOrDefault();
+            return Buscar(c => c.Descricao.Contains(descricao.Trim())).FirstOrDefault();
         }
     }
 }

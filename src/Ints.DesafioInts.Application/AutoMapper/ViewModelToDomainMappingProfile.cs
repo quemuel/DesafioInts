@@ -8,8 +8,8 @@ namespace Ints.DesafioInts.Application.AutoMapper
     {
         protected void Configure()
         {
-            CreateMap<ClienteViewModel, Cliente>();
-            CreateMap<PorteEmpresaViewModel, PorteEmpresa>();
+            CreateMap<Cliente, ClienteViewModel>();
+            CreateMap<PorteEmpresa, PorteEmpresaViewModel>();
         }
     }
 }

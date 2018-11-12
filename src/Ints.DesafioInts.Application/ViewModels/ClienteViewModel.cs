@@ -21,10 +21,10 @@ namespace Ints.DesafioInts.Application.ViewModels
         [DisplayName("Nome")]
         public string Nome { get; set; }
 
-        [ScaffoldColumn(false)]
         [DisplayName("Porte da Empresa")]
+        [Required(ErrorMessage = "Escolha o Porte da Empresa")]
         public int PorteEmpresaId { get; set; }
 
-        public virtual PorteEmpresa PorteEmpresa { get; set; }
+        public virtual PorteEmpresaViewModel PorteEmpresa { get; set; }
     }
 }

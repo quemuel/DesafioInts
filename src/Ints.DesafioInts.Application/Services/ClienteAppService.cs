@@ -32,7 +32,7 @@ namespace Ints.DesafioInts.Application.Services
 
         public ClienteViewModel ObterPorId(Guid id)
         {
-            return Mapper.Map<ClienteViewModel>(_clienteRepository.ObterPorId(id));
+            return Mapper.Map<Cliente, ClienteViewModel>(_clienteRepository.ObterPorId(id));
         }
 
         public IEnumerable<ClienteViewModel> ObterTodos()

@@ -9,7 +9,7 @@ namespace Ints.DesafioInts.Application.ViewModels
     {
         public PorteEmpresaViewModel()
         {
-            Clientes = new List<Cliente>();
+            Clientes = new List<ClienteViewModel>();
         }
 
         [Key]
@@ -21,6 +21,6 @@ namespace Ints.DesafioInts.Application.ViewModels
         [DisplayName("Descrição")]
         public string Descricao { get; set; }
 
-        public virtual ICollection<Cliente> Clientes { get; set; }
+        public virtual IEnumerable<ClienteViewModel> Clientes { get; set; }
     }
 }

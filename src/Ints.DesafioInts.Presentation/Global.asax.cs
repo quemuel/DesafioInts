@@ -13,6 +13,7 @@ namespace Ints.DesafioInts.Presentation
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
             AutoMapperConfig.RegisterMappings();
         }
     }

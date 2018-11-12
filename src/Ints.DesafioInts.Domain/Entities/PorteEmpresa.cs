@@ -10,6 +10,6 @@ namespace Ints.DesafioInts.Domain.Entities
         }
         public int PorteEmpresaId { get; set; }
         public string Descricao { get; set; }
-        public virtual ICollection<Cliente> Clientes { get; set; }
+        public virtual IEnumerable<Cliente> Clientes { get; set; }
     }
 }

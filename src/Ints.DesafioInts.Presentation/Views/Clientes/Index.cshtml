@@ -17,21 +17,23 @@
     </div>
     <div class="panel-body">
         <div class="form-group">
+            <label class="control-label">Filtro Porte Empresa</label>
             <div class="row">
                 <div class="col-md-12">
-                    @Html.ActionLink("Somente Grande", "Index", "Clientes", new { buscaTipo = 3 }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Somente Média", "Index", "Clientes", new { buscaTipo = 2 }, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Somente Pequena", "Index", "Clientes", new { buscaTipo = 1 }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Somente Grande", "Index", "Clientes", new { porteEmpresaId = 3}, new {@class = "btn btn-default"})
+                    @Html.ActionLink("Somente Média", "Index", "Clientes", new { porteEmpresaId = 2}, new {@class = "btn btn-default"})
+                    @Html.ActionLink("Somente Pequena", "Index", "Clientes", new { porteEmpresaId = 1}, new {@class = "btn btn-default"})
                 </div>
             </div>
         </div>
+        <label class="control-label">Filtro Cliente</label>
         <div class="row">
             <div class="col-md-4">
                 @using (Html.BeginForm(null, null, FormMethod.Get))
                 {
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="text" class="form-control" name="buscaNome" placeholder="Buscar por Nome...">
+                            <input type="text" class="form-control" name="buscaNome" placeholder="Buscar por Nome..." value="@ViewBag.NomeCliente">
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit">Buscar</button>
                             </span>
@@ -61,47 +63,78 @@
                 </th>
                 <th>Opções</th>
             </tr>
-
-            @foreach (var item in Model)
+            @if (Model.Count() > 0) {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @item.PorteEmpresa.Descricao
+                        </td>
+                        <td>
+                            @Html.ActionLink("Visualizar", "Details", new { id = item.ClienteId }, new { @class = "btn btn-success btn-xs" })
+                            @Html.ActionLink("Atualizar", "Edit", new { id = item.ClienteId }, new { @class = "btn btn-warning btn-xs" })
+                            @Html.ActionLink("Excluir", "Delete", new { id = item.ClienteId }, new { @class = "btn btn-danger btn-xs" })
+                            <button type="button" class="btn btn-danger btn-xs btn-confirmar-exclusao-modal" data-cliente-id="@item.ClienteId" data-toggle="modal" data-target="#confirmar-exclusao-modal">Excluir Via Ajax</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Nome)
-                    </td>
-                    <td>
-                        @item.PorteEmpresa.Descricao
-                    </td>
-                    <td>
-                        @Html.ActionLink("Visualizar", "Details", new { id = item.ClienteId }, new { @class = "btn btn-success btn-xs" })
-                        @Html.ActionLink("Atualizar", "Edit", new { id = item.ClienteId }, new { @class = "btn btn-warning btn-xs" })
-                        <button class="btn btn-danger btn-xs deletar-cliente" data-cliente-id="@item.ClienteId">Excluir</button>
+                    <td colspan="3">
+                        Nenhum registro encontrado
                     </td>
                 </tr>
             }
-
         </table>
     </div>
 </div>
+
+<div id="confirmar-exclusao-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Excluir Cliente</h4>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja deletar este cliente?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="btn-confirmar-exclusao" type="button" class="btn btn-danger" data-cliente-id="">Confirmar Exclusão</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 }
+
 @section Scripts {
     <script>
-        $("body").on("click", "#tabela-cliente .deletar-cliente", function () {
-            if (confirm("Tem certeza que quer excluir este registro?")) {
-                var buttonElement = $(this);
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("DeleteClienteAjax", "Clientes")?id=' + buttonElement.data('cliente-id'),
-                    data: {
-                        '__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-                    },
-                    success: function (response) {
-                        location.reload();
-                    }
-                });
-            }
+        $("body").on("click", ".btn-confirmar-exclusao-modal", function () {
+            $('#btn-confirmar-exclusao').attr('data-cliente-id', $(this).data('cliente-id'));
+        });
+
+        $("body").on("click", "#btn-confirmar-exclusao", function () {
+            var buttonElement = $(this);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteClienteAjax", "Clientes")?id=' + buttonElement.data('cliente-id'),
+                data: {
+                    '__RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    location.reload();
+                }
+            });
         });
     </script>
 }

@@ -7,8 +7,6 @@ using Ints.DesafioInts.Application.Interfaces;
 using Ints.DesafioInts.Application.Services;
 using Ints.DesafioInts.Application.ViewModels;
 using System.Data.SqlClient;
-using AutoMapper;
-using Ints.DesafioInts.Domain.Entities;
 
 namespace Ints.DesafioInts.Presentation.Controllers
 {
@@ -23,17 +21,22 @@ namespace Ints.DesafioInts.Presentation.Controllers
             _porteEmpresaAppService = new PorteEmpresaAppService();
         }
 
-        public ActionResult Index(string buscaNome = null, string buscaTipo = null)
+        public ActionResult Index(string buscaNome = null, string porteEmpresaId = null)
         {
             List<ClienteViewModel> clientes = new List<ClienteViewModel>();
 
             if (!string.IsNullOrEmpty(buscaNome))
             {
-                clientes.Add(_cadastroAppService.ObterPorNome(buscaNome)); 
+                ViewBag.NomeCliente = buscaNome;
+                ClienteViewModel clienteViewModel = _cadastroAppService.ObterPorNome(buscaNome);
+                if (clienteViewModel != null)
+                {
+                    clientes.Add(clienteViewModel);
+                }
             }
-            else if (!string.IsNullOrEmpty(buscaTipo))
+            else if (!string.IsNullOrEmpty(porteEmpresaId))
             {
-                ConexaoNativa(clientes, buscaTipo);
+                ConexaoNativa(clientes, porteEmpresaId);
             }
             else
             {
@@ -43,11 +46,11 @@ namespace Ints.DesafioInts.Presentation.Controllers
             return View(clientes);
         }
 
-        private void ConexaoNativa(List<ClienteViewModel> clientes, string buscaTipo)
+        private void ConexaoNativa(List<ClienteViewModel> clientes, string porteEmpresaId)
         {
             string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"]
                 .ConnectionString;
-            string query = "SELECT ClienteId, Nome, PorteEmpresaId FROM dbo.Cliente WHERE PorteEmpresaId = " + buscaTipo;
+            string query = "SELECT ClienteId, Nome, PorteEmpresaId FROM dbo.Cliente WHERE PorteEmpresaId = " + porteEmpresaId;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(query, connection);
@@ -62,7 +65,7 @@ namespace Ints.DesafioInts.Presentation.Controllers
                         clienteViewModel.ClienteId = Guid.Parse(reader["ClienteId"].ToString());
                         clienteViewModel.Nome = reader["Nome"].ToString();
                         clienteViewModel.PorteEmpresaId = Convert.ToInt32(reader["PorteEmpresaId"]);
-                        clienteViewModel.PorteEmpresa = Mapper.Map<PorteEmpresa>(_porteEmpresaAppService.ObterPorId(Convert.ToInt32(reader["PorteEmpresaId"])));
+                        clienteViewModel.PorteEmpresa = _porteEmpresaAppService.ObterPorId(Convert.ToInt32(reader["PorteEmpresaId"]));
                         clientes.Add(clienteViewModel);
                     }
                 }

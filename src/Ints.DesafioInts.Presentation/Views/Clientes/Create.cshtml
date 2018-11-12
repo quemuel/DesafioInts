@@ -37,7 +37,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @Html.DropDownList("PorteEmpresaId", null, "Selecione...", htmlAttributes: new { @class = "form-control selectpicker", @data_live_search = "true" })
+                            @Html.DropDownListFor(c => c.PorteEmpresaId, ViewBag.PorteEmpresaId as SelectList, "Selecione...", htmlAttributes: new { @class = "form-control"})
                             @Html.ValidationMessageFor(model => model.PorteEmpresaId, "", new { @class = "text-danger" })
                         </div>
                     </div>
